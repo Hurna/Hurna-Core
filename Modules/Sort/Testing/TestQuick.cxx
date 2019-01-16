@@ -30,25 +30,22 @@ using namespace huc::sort;
 
 #ifndef DOXYGEN_SKIP
 namespace {
-  // Simple sorted array of integers with negative values
-  const int SortedArrayInt[] = {-3, -2, 0, 2, 8, 15, 36, 212, 366};
-  // Simple random array of integers with negative values
-  const int RandomArrayInt[] = {4, 3, 5, 2, -18, 3, 2, 3, 4, 5, -5};
-  // Random string
-  const std::string RandomStr = "xacvgeze";
-
   typedef std::vector<int> Container;
   typedef Container::iterator IT;
-  typedef std::greater_equal<IT::value_type> GE_Comparator;
+  typedef std::greater<IT::value_type> GE_Comparator;
+
+  const Container ArraySort = {-3, -2, 0, 2, 8, 15, 36, 212, 366};   // sorted with negative values
+  const Container ArrayRand = {4, 3, 5, 2, -18, 3, 2, 3, 4, 5, -5};  // random with negative values
+  const std::string StrRand = "xacvgeze";
 }
 #endif /* DOXYGEN_SKIP */
 
 // Basic Quick-Sort tests
-TEST(TestSort, QuickSorts)
+TEST(TestQuick, QuickSorts)
 {
   // Normal Run
   {
-    Container randomdArray(RandomArrayInt, RandomArrayInt + sizeof(RandomArrayInt) / sizeof(int));
+    Container randomdArray(ArrayRand);
     QuickSort<IT>(randomdArray.begin(), randomdArray.end());
 
     // All elements are sorted
@@ -58,7 +55,7 @@ TEST(TestSort, QuickSorts)
 
   // Already sortedArray - Array should not be affected
   {
-    Container sortedArray(SortedArrayInt, SortedArrayInt + sizeof(SortedArrayInt) / sizeof(int));
+    Container sortedArray(ArraySort);
     QuickSort<IT>(sortedArray.begin(), sortedArray.end());
 
     // All elements are still sorted
@@ -68,12 +65,12 @@ TEST(TestSort, QuickSorts)
 
   // Inverse iterator order - Array should not be affected
   {
-    Container randomdArray(RandomArrayInt, RandomArrayInt + sizeof(RandomArrayInt) / sizeof(int));
+    Container randomdArray(ArrayRand);
     QuickSort<IT>(randomdArray.end(), randomdArray.begin());
 
     int i = 0;
     for (auto it = randomdArray.begin(); it < randomdArray.end(); ++it, ++i)
-      EXPECT_EQ(RandomArrayInt[i], *it);
+      EXPECT_EQ(ArrayRand[i], *it);
   }
 
   // No error unitialized array
@@ -91,7 +88,7 @@ TEST(TestSort, QuickSorts)
 
   // String - String should be sorted as an array
   {
-    std::string stringToSort = RandomStr;
+    std::string stringToSort = StrRand;
     QuickSort<std::string::iterator, std::less_equal<char>>(stringToSort.begin(), stringToSort.end());
     for (auto it = stringToSort.begin(); it < stringToSort.end() - 1; ++it)
       EXPECT_LE(*it, *(it + 1));
@@ -99,11 +96,11 @@ TEST(TestSort, QuickSorts)
 }
 
 // Basic Quick-Sort tests - Inverse Order
-TEST(TestSort, QuickSortGreaterComparator)
+TEST(TestQuick, QuickSortGreaterComparator)
 {
   // Normal Run - Elements should be sorted in inverse order
   {
-    Container randomdArray(RandomArrayInt, RandomArrayInt + sizeof(RandomArrayInt) / sizeof(int));
+    Container randomdArray(ArrayRand);
     QuickSort<IT, GE_Comparator>(randomdArray.begin(), randomdArray.end());
 
     // All elements are sorted in inverse order
@@ -113,7 +110,7 @@ TEST(TestSort, QuickSortGreaterComparator)
 
   // Already sorted Array in inverse order - Array should not be affected
   {
-    Container invSortedArray(SortedArrayInt, SortedArrayInt + sizeof(SortedArrayInt) / sizeof(int));
+    Container invSortedArray(ArraySort);
     QuickSort<IT, GE_Comparator>(invSortedArray.begin(), invSortedArray.end());
 
     // All elements are still sorted in inverse order
@@ -123,7 +120,7 @@ TEST(TestSort, QuickSortGreaterComparator)
 
   // String - String should be sorted in inverse order
   {
-    std::string stringToSort = RandomStr;
+    std::string stringToSort = StrRand;
     QuickSort<std::string::iterator, std::greater_equal<char>>(stringToSort.begin(), stringToSort.end());
 
     // All elements are sorted in inverse order

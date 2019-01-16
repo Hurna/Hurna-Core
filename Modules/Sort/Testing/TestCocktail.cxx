@@ -30,25 +30,22 @@ using namespace huc::sort;
 
 #ifndef DOXYGEN_SKIP
 namespace {
-  // Simple sorted array of integers with negative values
-  const int SortedArrayInt[] = {-3, -2, 0, 2, 8, 15, 36, 212, 366};
-  // Simple random array of integers with negative values
-  const int RandomArrayInt[] = {4, 3, 5, 2, -18, 3, 2, 3, 4, 5, -5};
-  // Random string
-  const std::string RandomStr = "xacvgeze";
-
   typedef std::vector<int> Container;
   typedef Container::iterator IT;
   typedef std::greater<IT::value_type> GE_Comparator;
+
+  const Container ArraySort = {-3, -2, 0, 2, 8, 15, 36, 212, 366};   // sorted with negative values
+  const Container ArrayRand = {4, 3, 5, 2, -18, 3, 2, 3, 4, 5, -5};  // random with negative values
+  const std::string StrRand = "xacvgeze";
 }
 #endif /* DOXYGEN_SKIP */
 
 // Basic Cocktail-Sort tests
-TEST(TestSort, CocktailSorts)
+TEST(TestCocktail, CocktailSorts)
 {
   // Normal Run
   {
-    Container randomdArray(RandomArrayInt, RandomArrayInt + sizeof(RandomArrayInt) / sizeof(int));
+    Container randomdArray(ArrayRand);
     Cocktail<IT>(randomdArray.begin(), randomdArray.end());
 
     // All elements are sorted
@@ -56,24 +53,24 @@ TEST(TestSort, CocktailSorts)
       EXPECT_LE(*it, *(it + 1));
   }
 
-  // Already sortedArray - Array should not be affected
+  // Already ArraySort - Array should not be affected
   {
-    Container sortedArray(SortedArrayInt, SortedArrayInt + sizeof(SortedArrayInt) / sizeof(int));
-    Cocktail<IT>(sortedArray.begin(), sortedArray.end());
+    Container ArraySort(ArraySort);
+    Cocktail<IT>(ArraySort.begin(), ArraySort.end());
 
     // All elements are still sorted
-    for (auto it = sortedArray.begin(); it < sortedArray.end() - 1; ++it)
+    for (auto it = ArraySort.begin(); it < ArraySort.end() - 1; ++it)
       EXPECT_LE(*it, *(it + 1));
   }
 
   // Inverse iterator order - Array should not be affected
   {
-    Container randomdArray(RandomArrayInt, RandomArrayInt + sizeof(RandomArrayInt) / sizeof(int));
+    Container randomdArray(ArrayRand);
     Cocktail<IT>(randomdArray.end(), randomdArray.begin());
 
     int i = 0;
     for (auto it = randomdArray.begin(); it < randomdArray.end(); ++it, ++i)
-      EXPECT_EQ(RandomArrayInt[i], *it);
+      EXPECT_EQ(ArrayRand[i], *it);
   }
 
   // No error unitialized array
@@ -91,7 +88,7 @@ TEST(TestSort, CocktailSorts)
 
   // String - String should be sorted as an array
   {
-    std::string stringToSort = RandomStr;
+    std::string stringToSort = StrRand;
     Cocktail<std::string::iterator, std::less<char>>(stringToSort.begin(), stringToSort.end());
     for (auto it = stringToSort.begin(); it < stringToSort.end() - 1; ++it)
       EXPECT_LE(*it, *(it + 1));
@@ -99,11 +96,11 @@ TEST(TestSort, CocktailSorts)
 }
 
 // Basic Cocktail-Sort tests - Inverse Order
-TEST(TestSort, CocktailGreaterComparator)
+TEST(TestCocktail, CocktailGreaterComparator)
 {
   // Normal Run - Elements should be sorted in inverse order
   {
-    Container randomdArray(RandomArrayInt, RandomArrayInt + sizeof(RandomArrayInt) / sizeof(int));
+    Container randomdArray(ArrayRand);
     Cocktail<IT, GE_Comparator>(randomdArray.begin(), randomdArray.end());
 
     // All elements are sorted in inverse order
@@ -113,17 +110,17 @@ TEST(TestSort, CocktailGreaterComparator)
 
   // Already sorted Array in inverse order - Array should not be affected
   {
-    Container invSortedArray(SortedArrayInt, SortedArrayInt + sizeof(SortedArrayInt) / sizeof(int));
-    Cocktail<IT, GE_Comparator>(invSortedArray.begin(), invSortedArray.end());
+    Container invArraySort(ArraySort);
+    Cocktail<IT, GE_Comparator>(invArraySort.begin(), invArraySort.end());
 
     // All elements are still sorted in inverse order
-    for (auto it = invSortedArray.begin(); it < invSortedArray.end() - 1; ++it)
+    for (auto it = invArraySort.begin(); it < invArraySort.end() - 1; ++it)
       EXPECT_GE(*it, *(it + 1));
   }
 
   // String - String should be sorted in inverse order
   {
-    std::string stringToSort = RandomStr;
+    std::string stringToSort = StrRand;
     Cocktail<std::string::iterator, std::greater<char>>(stringToSort.begin(), stringToSort.end());
 
     // All elements are sorted in inverse order

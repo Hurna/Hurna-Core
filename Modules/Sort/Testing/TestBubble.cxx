@@ -30,50 +30,47 @@ using namespace huc::sort;
 
 #ifndef DOXYGEN_SKIP
 namespace {
-  // Simple sorted array of integers with negative values
-  const int SortedArrayInt[] = {-3, -2, 0, 2, 8, 15, 36, 212, 366};
-  // Simple random array of integers with negative values
-  const int RandomArrayInt[] = {4, 3, 5, 2, -18, 3, 2, 3, 4, 5, -5};
-  // Random string
-  const std::string RandomStr = "xacvgeze";
-
   typedef std::vector<int> Container;
   typedef Container::iterator IT;
   typedef std::greater<IT::value_type> GE_Comparator;
+
+  const Container ArraySort = {-3, -2, 0, 2, 8, 15, 36, 212, 366};  // sorted with negative values
+  const Container ArrayRand = {4, 3, 5, 2, -18, 3, 2, 3, 4, 5, -5}; // random with negative values
+  const std::string RandStr = "xacvgeze";
 }
 #endif /* DOXYGEN_SKIP */
 
 // Basic Bubble-Sort tests
-TEST(TestSort, BubbleSorts)
+TEST(TestBubble, BubbleSorts)
 {
   // Normal Run
   {
-    Container randomdArray(RandomArrayInt, RandomArrayInt + sizeof(RandomArrayInt) / sizeof(int));
-    Bubble<IT>(randomdArray.begin(), randomdArray.end());
+    Container vector(ArrayRand);
+    Bubble<IT>(vector.begin(), vector.end());
 
     // All elements are sorted
-    for (auto it = randomdArray.begin(); it < randomdArray.end() - 1; ++it)
+    for (auto it = vector.begin(); it < vector.end() - 1; ++it)
       EXPECT_LE(*it, *(it + 1));
   }
 
-  // Already sortedArray - Array should not be affected
+  // Already ArraySort - Array should not be affected
   {
-    Container sortedArray(SortedArrayInt, SortedArrayInt + sizeof(SortedArrayInt) / sizeof(int));
-    Bubble<IT>(sortedArray.begin(), sortedArray.end());
+    Container vector(ArraySort);
+    Bubble<IT>(vector.begin(), vector.end());
 
     // All elements are still sorted
-    for (auto it = sortedArray.begin(); it < sortedArray.end() - 1; ++it)
+    for (auto it = vector.begin(); it < vector.end() - 1; ++it)
       EXPECT_LE(*it, *(it + 1));
   }
 
   // Inverse iterator order - Array should not be affected
   {
-    Container randomdArray(RandomArrayInt, RandomArrayInt + sizeof(RandomArrayInt) / sizeof(int));
-    Bubble<IT>(randomdArray.end(), randomdArray.begin());
+    Container vector(ArrayRand);
+    Bubble<IT>(vector.end(), vector.begin());
 
     int i = 0;
-    for (auto it = randomdArray.begin(); it < randomdArray.end(); ++it, ++i)
-      EXPECT_EQ(RandomArrayInt[i], *it);
+    for (auto it = vector.begin(); it < vector.end(); ++it, ++i)
+      EXPECT_EQ(ArrayRand[i], *it);
   }
 
   // No error unitialized array
@@ -91,7 +88,7 @@ TEST(TestSort, BubbleSorts)
 
   // String - String should be sorted as an array
   {
-    std::string stringToSort = RandomStr;
+    std::string stringToSort = RandStr;
     Bubble<std::string::iterator, std::less<char>>(stringToSort.begin(), stringToSort.end());
     for (auto it = stringToSort.begin(); it < stringToSort.end() - 1; ++it)
       EXPECT_LE(*it, *(it + 1));
@@ -99,31 +96,31 @@ TEST(TestSort, BubbleSorts)
 }
 
 // Basic Bubble-Sort tests - Inverse Order
-TEST(TestSort, BubbleGreaterComparator)
+TEST(TestBubble, BubbleGreaterComparator)
 {
   // Normal Run - Elements should be sorted in inverse order
   {
-    Container randomdArray(RandomArrayInt, RandomArrayInt + sizeof(RandomArrayInt) / sizeof(int));
-    Bubble<IT, GE_Comparator>(randomdArray.begin(), randomdArray.end());
+    Container vector(ArrayRand);
+    Bubble<IT, GE_Comparator>(vector.begin(), vector.end());
 
     // All elements are sorted in inverse order
-    for (auto it = randomdArray.begin(); it < randomdArray.end() - 1; ++it)
+    for (auto it = vector.begin(); it < vector.end() - 1; ++it)
       EXPECT_GE(*it, *(it + 1));
   }
 
   // Already sorted Array in inverse order - Array should not be affected
   {
-    Container invSortedArray(SortedArrayInt, SortedArrayInt + sizeof(SortedArrayInt) / sizeof(int));
-    Bubble<IT, GE_Comparator>(invSortedArray.begin(), invSortedArray.end());
+    Container vector(ArraySort);
+    Bubble<IT, GE_Comparator>(vector.begin(), vector.end());
 
     // All elements are still sorted in inverse order
-    for (auto it = invSortedArray.begin(); it < invSortedArray.end() - 1; ++it)
+    for (auto it = vector.begin(); it < vector.end() - 1; ++it)
       EXPECT_GE(*it, *(it + 1));
   }
 
   // String - String should be sorted in inverse order
   {
-    std::string stringToSort = RandomStr;
+    std::string stringToSort = RandStr;
     Bubble<std::string::iterator, std::greater<char>>(stringToSort.begin(), stringToSort.end());
 
     // All elements are sorted in inverse order

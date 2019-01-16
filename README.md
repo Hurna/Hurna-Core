@@ -70,15 +70,16 @@ it **improves work-flow, increase productivity, gives you agility and project he
 
 ## Quick Access
 
-- [**Documentation**](http://wiki.hurna.io/hurna_core/doc/index.html)
+- [**Documentation**](https://wiki.hurna.io/hurna_core/doc/index.html)
 - [**Git Repository**](https://github.com/Hurna/Hurna-Core)
 - [**Kitware Dashboard**](https://my.cdash.org/index.php?project=Hurna+Core)
 
 ### Related
 
-- [**H.urna Website**](http://hurna.io/): The main website of H.urna organization.
-- [**H.urna Explorer**](http://demo.hurna.io/): A free, online, visualization platform.
-- [**H.urna Wiki**](http://wiki.hurna.io/): The main Wiki of H.urna organization.
+- [**H.urna Website**](https://hurna.io/): The main website of H.urna organization.
+- [**H.urna Explorer**](https://demo.hurna.io/): A free, online, visualization platform.
+- [**H.urna Wiki**](https://wiki.hurna.io/): Wiki containing free sciences courses and resources.
+- [**H.urna Community**](https://community.hurna.io/): H.urna community to get help and news.
 
 # Getting Started
 ## Build using CMake-GUI:
@@ -144,6 +145,14 @@ To manually run the 'TestBasicBinary' Unit Test (using GTest):
 
 ## Data Structures
 - **Binary Search Tree:** Binary Search Tree, Ordered Tree or Sorted Binary Tree divides all its sub-trees into two segments: left sub-tree and right sub-tree.
+
+## Maze Generators
+- **Binary Tree:** Generate a maze using a binary tree strategy.
+- **Depth First Search:** Generate a maze using a randomized version of the Depth First Search (DFS) algorithm.
+- **Kruskal's:** Generate a maze using a randomized version of the Kruskal's algorithm.
+- **Prim's:** Generate a maze using a randomized version of the Prim's algorithm.
+- **Recursive Division:** Generate a maze by recursively building walls (fractal kind).
+- **Sidewinder:** Generate a maze using a binary tree strategy.
 
 ## Search
 - **Binary Search:** Iteratively proceed a dichotomous search, within a sorted sequence, on the first occurrence of the key.

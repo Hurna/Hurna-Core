@@ -18,11 +18,18 @@
 #
 #############################################################################################################
 
-SET(MODULES_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+set(HUC ${PROJECT_NAME})
 
-add_subdirectory(Combinatory)
-add_subdirectory(Maze)
-add_subdirectory(DataStructures)
-add_subdirectory(Search)
-add_subdirectory(Sort)
+# Source files
+set(MODULE_MAZE_SRCS TestBinaryTreeGen.cxx
+                     TestDFSGen.cxx
+                     TestKruskalsGen.cxx
+                     TestPrimsGen.cxx
+                     TestRecursiveDivisionGen.cxx
+                     TestSidewinderGen.cxx)
 
+# --------------------------------------------------------------------------
+# Build Testing executables
+# --------------------------------------------------------------------------
+include_directories(${MODULES_DIR})
+cxx_gtest(TestModuleMaze "${MODULE_MAZE_SRCS}" ${HUC_SRCS})

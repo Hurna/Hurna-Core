@@ -21,7 +21,8 @@
 set(HUC ${PROJECT_NAME})
 
 # Source files
-set(MODULE_DATA_STRCTURES_SRCS TestBinarySearchTree.cxx)
+set(MODULE_DATA_STRCTURES_SRCS TestBinarySearchTree.cxx
+                               TestGrid.cxx)
 
 # --------------------------------------------------------------------------
 # Build Testing executables

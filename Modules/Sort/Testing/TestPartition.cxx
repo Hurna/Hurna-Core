@@ -30,18 +30,16 @@ using namespace huc::sort;
 
 #ifndef DOXYGEN_SKIP
 namespace {
-  // Simple sorted array of integers with negative values
-  const int SortedArrayInt[] = {-3, -2, 0, 2, 8, 15, 36, 212, 366};
-  // Simple sorted array of integers with negative values
-  const int InvSortedArrayInt[] = {366, 212, 36, 15, 8, 2, 0, -2, -3};
-  // Simple random array of integers with negative values
-  const int RandomArrayInt[] = {4, 3, 5, 2, -18, 3, 2, 3, 4, 5, -5};
-  // Random string
-  const std::string RandomStr = "xacvgeze";
-
   typedef std::vector<int> Container;
   typedef Container::iterator IT;
   typedef std::greater_equal<IT::value_type> GE_Compare;
+
+  const Container ArraySort = {-3, -2, 0, 2, 8, 15, 36, 212, 366};    // Sorted with neg values
+  const Container ArrayInvSort = {366, 212, 36, 15, 8, 2, 0, -2, -3}; // Inverse Sorted with neg values
+  const Container ArrayRand = {4, 3, 5, 2, -18, 3, 2, 3, 4, 5, -5};   // Random sequence
+  const std::string StrRand = "xacvgeze";
+
+
 
   template<typename IT>
   void CheckPartition (const IT& begin, const IT& end, const IT& newPivot,
@@ -74,49 +72,49 @@ TEST(TestPartition, Partitions)
 {
   // Normal Run - Random Array
   {
-    Container randomdArray(RandomArrayInt, RandomArrayInt + sizeof(RandomArrayInt) / sizeof(int));
-    auto pivot = randomdArray.begin() + 5;
+    Container vector(ArrayRand);
+    auto pivot = vector.begin() + 5;
     auto pivotVal = *pivot;
 
     // Run partition - Should result in: max[begin, pivot[ <= pivot <= min]pivot, end]
-    auto newPivot = Partition<IT>(randomdArray.begin(), pivot, randomdArray.end());
-    CheckPartition<IT>(randomdArray.begin(), randomdArray.end(), newPivot, pivotVal);
+    auto newPivot = Partition<IT>(vector.begin(), pivot, vector.end());
+    CheckPartition<IT>(vector.begin(), vector.end(), newPivot, pivotVal);
   }
 
   // Already sortedArray - Array should not be affected
   {
-    Container sortedArray(SortedArrayInt, SortedArrayInt + sizeof(SortedArrayInt) / sizeof(int));
-    auto pivot = sortedArray.begin() + 5;
+    Container vector(ArraySort);
+    auto pivot = vector.begin() + 5;
 
-    Partition<IT>(sortedArray.begin(), pivot, sortedArray.end());
+    Partition<IT>(vector.begin(), pivot, vector.end());
 
     int i = 0;
-    for (auto it = sortedArray.begin(); it < sortedArray.end(); ++it, ++i)
-      EXPECT_EQ(SortedArrayInt[i], *it);
+    for (auto it = vector.begin(); it < vector.end(); ++it, ++i)
+      EXPECT_EQ(ArraySort[i], *it);
   }
 
   // Begin and End inversed - Array should not be affected
   {
-    Container randomdArray(RandomArrayInt, RandomArrayInt + sizeof(RandomArrayInt) / sizeof(int));
-    auto pivot = randomdArray.begin() + 5;
+    Container vector(ArrayRand);
+    auto pivot = vector.begin() + 5;
 
-    Partition<IT>(randomdArray.end(), pivot, randomdArray.begin());
+    Partition<IT>(vector.end(), pivot, vector.begin());
 
     int i = 0;
-    for (auto it = randomdArray.begin(); it < randomdArray.end(); ++it, ++i)
-      EXPECT_EQ(RandomArrayInt[i], *it);
+    for (auto it = vector.begin(); it < vector.end(); ++it, ++i)
+      EXPECT_EQ(ArrayRand[i], *it);
   }
 }
 
 // String collection - Should result in: max[begin, pivot[ <= pivot <= min]pivot, end]
 TEST(TestPartition, PartitionString)
 {
-  std::string randomStr = RandomStr;
-  auto pivot = randomStr.begin() + 5;
+  std::string str = StrRand;
+  auto pivot = str.begin() + 5;
   auto pivotVal = *pivot;
 
-  auto newPivot = Partition<std::string::iterator>(randomStr.begin(), pivot, randomStr.end());
-  CheckPartition<std::string::iterator>(randomStr.begin(), randomStr.end(), newPivot, pivotVal);
+  auto newPivot = Partition<std::string::iterator>(str.begin(), pivot, str.end());
+  CheckPartition<std::string::iterator>(str.begin(), str.end(), newPivot, pivotVal);
 }
 
 // Extreme Pivot Partition tests
@@ -124,38 +122,38 @@ TEST(TestPartition, PartitionBoudaryPivots)
 {
   // Pivot choose as begin
   {
-    Container randomdArray(RandomArrayInt, RandomArrayInt + sizeof(RandomArrayInt) / sizeof(int));
-    auto pivot = randomdArray.begin();
+    Container vector(ArrayRand);
+    auto pivot = vector.begin();
     const int pivotVal = *pivot;
 
     // Run partition
-    auto newPivot = Partition<IT>(randomdArray.begin(), pivot, randomdArray.end());
-    CheckPartition<IT>(randomdArray.begin(), randomdArray.end(), newPivot, pivotVal);
+    auto newPivot = Partition<IT>(vector.begin(), pivot, vector.end());
+    CheckPartition<IT>(vector.begin(), vector.end(), newPivot, pivotVal);
 
   }
 
   // Pivot choose as last element
   {
-    Container randomdArray(RandomArrayInt, RandomArrayInt + sizeof(RandomArrayInt) / sizeof(int));
-    auto pivot = randomdArray.end() - 1;
+    Container vector(ArrayRand);
+    auto pivot = vector.end() - 1;
     const int pivotVal = *pivot;
 
     // Run partition
-    auto newPivot = Partition<IT>(randomdArray.begin(), pivot, randomdArray.end());
-    CheckPartition<IT>(randomdArray.begin(), randomdArray.end(), newPivot, pivotVal);
+    auto newPivot = Partition<IT>(vector.begin(), pivot, vector.end());
+    CheckPartition<IT>(vector.begin(), vector.end(), newPivot, pivotVal);
   }
 
   // Pivot choose as end - cannot process
   {
-    Container randomdArray(RandomArrayInt, RandomArrayInt + sizeof(RandomArrayInt) / sizeof(int));
-    auto pivot = randomdArray.end();
+    Container vector(ArrayRand);
+    auto pivot = vector.end();
 
     // Run partition
-    Partition<IT>(randomdArray.begin(), pivot, randomdArray.end());
+    Partition<IT>(vector.begin(), pivot, vector.end());
 
     int i = 0;
-    for (auto it = randomdArray.begin(); it < randomdArray.end(); ++it, ++i)
-      EXPECT_EQ(RandomArrayInt[i], *it);
+    for (auto it = vector.begin(); it < vector.end(); ++it, ++i)
+      EXPECT_EQ(ArrayRand[i], *it);
   }
 }
 
@@ -164,18 +162,18 @@ TEST(TestPartition, PartitionGreaterComparator)
 {
   // Normal Run - Should result in: min[begin, pivot[ >= pivot >= max]pivot, end]
   {
-    Container randomdArray(RandomArrayInt, RandomArrayInt + sizeof(RandomArrayInt) / sizeof(int));
-    auto pivot = randomdArray.begin() + 5;
+    Container vector(ArrayRand);
+    auto pivot = vector.begin() + 5;
     const auto pivotVal = *pivot;
 
     // Run partition
-    auto newPivot = Partition<IT, GE_Compare>(randomdArray.begin(), pivot, randomdArray.end());
-    CheckPartition<IT>(randomdArray.begin(), randomdArray.end(), newPivot, pivotVal, false);
+    auto newPivot = Partition<IT, GE_Compare>(vector.begin(), pivot, vector.end());
+    CheckPartition<IT>(vector.begin(), vector.end(), newPivot, pivotVal, false);
   }
 
   // Already InverseSortedArray - Array should not be affected
   {
-    Container invSortedArray(InvSortedArrayInt, InvSortedArrayInt + sizeof(InvSortedArrayInt) / sizeof(int));
+    Container invSortedArray(ArrayInvSort);
     auto pivot = invSortedArray.begin() + 5;
 
     Partition<IT, GE_Compare>(invSortedArray.begin(), pivot, invSortedArray.end());
@@ -187,12 +185,13 @@ TEST(TestPartition, PartitionGreaterComparator)
 
   // String collection - Should result in: min[begin, pivot[ >= pivot >= max]pivot, end]
   {
-    std::string randomStr = RandomStr;
-    auto pivot = randomStr.begin() + 5;
+    std::string str = StrRand;
+    auto pivot = str.begin() + 5;
     const auto pivotVal = *pivot;
 
     // Run partition
-    auto newPivot = Partition<std::string::iterator, std::greater_equal<char>>(randomStr.begin(), pivot, randomStr.end());
-    CheckPartition<std::string::iterator>(randomStr.begin(), randomStr.end(), newPivot, pivotVal, false);
+    auto newPivot =
+      Partition<std::string::iterator, std::greater_equal<char>>(str.begin(), pivot, str.end());
+    CheckPartition<std::string::iterator>(str.begin(), str.end(), newPivot, pivotVal, false);
   }
 }

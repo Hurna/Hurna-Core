@@ -27,40 +27,40 @@ namespace huc
 {
   namespace sort
   {
-    /// Bubble Sort - Proceed an in-place sort on the elements.
-    ///
-    /// @tparam IT type using to go through the collection.
-    /// @tparam Compare functor type (std::less_equal in order, std::greater_equal for inverse order).
-    ///
-    /// @param begin,end iterators to the initial and final positions of
-    /// the sequence to be sorted. The range used is [first,last), which contains all the elements between
-    /// first and last, including the element pointed by first but not the element pointed by last.
-    ///
-    /// @return void.
-    template <typename IT, typename Compare = std::less<typename std::iterator_traits<IT>::value_type>>
-    void Bubble(const IT& begin, const IT& end)
+  /// Bubble Sort - Proceed an in-place sort on the elements.
+  ///
+  /// @tparam IT type using to go through the collection.
+  /// @tparam Compare functor type (std::less_equal in order, std::greater_equal for inverse order).
+  ///
+  /// @param begin,end iterators to the initial and final positions of
+  /// the sequence to be sorted. The range used is [first,last), which contains all the elements between
+  /// first and last, including the element pointed by first but not the element pointed by last.
+  ///
+  /// @return void.
+  template <typename IT, typename Compare = std::less<typename std::iterator_traits<IT>::value_type>>
+  void Bubble(const IT& begin, const IT& end)
+  {
+    const auto distance = static_cast<const int>(std::distance(begin, end));
+    if (distance < 2)
+      return;
+
+    int endIdx = -1;
+    bool hasSwapped;
+    // for each element - bubble it up until the end.
+    for (auto it = begin; it < end - 1; ++it, --endIdx)
     {
-      const auto distance = static_cast<const int>(std::distance(begin, end));
-      if (distance < 2)
-        return;
+      hasSwapped = false;
+      for (auto curIt = begin; curIt < end + endIdx; ++curIt)
+        if (Compare()(*(curIt + 1), *curIt))
+        {
+          std::swap(*(curIt + 1), *curIt);
+          hasSwapped = true;
+        }
 
-      int endIdx = -1;
-      bool hasSwapped;
-      // for each element - bubble it up until the end.
-      for (auto it = begin; it < end - 1; ++it, --endIdx)
-      {
-        hasSwapped = false;
-        for (auto curIt = begin; curIt < end + endIdx; ++curIt)
-          if (Compare()(*(curIt + 1), *curIt))
-          {
-            std::swap(*(curIt + 1), *curIt);
-            hasSwapped = true;
-          }
-
-        if (!hasSwapped)
-          break;
-      }
+      if (!hasSwapped)
+        break;
     }
+  }
   }
 }
 

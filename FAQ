@@ -1,0 +1,6 @@
+I got the following error:
+
+cannot find -lgtest / -lgtest_main
+The most probable problem is the linker is looking for lgtest and lgtest_main while you only have build the lgtestd and lgtest_maind libraries (debug). 
+
+Your solution is whether to build first in release mode within the same build directory or to link the debug libraries of GTest.

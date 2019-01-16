@@ -18,11 +18,12 @@
 #
 #############################################################################################################
 
-SET(MODULES_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+project(HUCModuleMaze)
 
-add_subdirectory(Combinatory)
-add_subdirectory(Maze)
-add_subdirectory(DataStructures)
-add_subdirectory(Search)
-add_subdirectory(Sort)
+# Source files
+set(HUC_SRCS "${CMAKE_CURRENT_SOURCE_DIR}")
 
+# Testing
+if(BUILD_TESTING)
+  add_subdirectory(Testing)
+endif()

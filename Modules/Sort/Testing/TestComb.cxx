@@ -30,25 +30,22 @@ using namespace huc::sort;
 
 #ifndef DOXYGEN_SKIP
 namespace {
-  // Simple sorted array of integers with negative values
-  const int SortedArrayInt[] = {-3, -2, 0, 2, 8, 15, 36, 212, 366};
-  // Simple random array of integers with negative values
-  const int RandomArrayInt[] = {4, 3, 5, 2, -18, 3, 2, 3, 4, 5, -5};
-  // Random string
-  const std::string RandomStr = "xacvgeze";
-
   typedef std::vector<int> Container;
   typedef Container::iterator IT;
   typedef std::greater<IT::value_type> GE_Comparator;
+
+  const Container ArraySort = {-3, -2, 0, 2, 8, 15, 36, 212, 366}; // sorted with negative values
+  const Container ArrayRand = {4, 3, 5, 2, -18, 3, 2, 3, 4, 5, -5};  // random with negative values
+  const std::string RandomStr = "xacvgeze";
 }
 #endif /* DOXYGEN_SKIP */
 
 // Basic Comb-Sort tests
-TEST(TestSort, CombSorts)
+TEST(TestComb, CombSorts)
 {
   // Normal Run
   {
-    Container randomdArray(RandomArrayInt, RandomArrayInt + sizeof(RandomArrayInt) / sizeof(int));
+    Container randomdArray(ArrayRand);
     Comb<IT>(randomdArray.begin(), randomdArray.end());
 
     // All elements are sorted
@@ -56,24 +53,24 @@ TEST(TestSort, CombSorts)
       EXPECT_LE(*it, *(it + 1));
   }
 
-  // Already sortedArray - Array should not be affected
+  // Already Sorted Array - Array should not be affected
   {
-    Container sortedArray(SortedArrayInt, SortedArrayInt + sizeof(SortedArrayInt) / sizeof(int));
-    Comb<IT>(sortedArray.begin(), sortedArray.end());
+    Container vector(ArraySort);
+    Comb<IT>(vector.begin(), vector.end());
 
     // All elements are still sorted
-    for (auto it = sortedArray.begin(); it < sortedArray.end() - 1; ++it)
+    for (auto it = vector.begin(); it < vector.end() - 1; ++it)
       EXPECT_LE(*it, *(it + 1));
   }
 
   // Inverse iterator order - Array should not be affected
   {
-    Container randomdArray(RandomArrayInt, RandomArrayInt + sizeof(RandomArrayInt) / sizeof(int));
+    Container randomdArray(ArrayRand);
     Comb<IT>(randomdArray.end(), randomdArray.begin());
 
     int i = 0;
     for (auto it = randomdArray.begin(); it < randomdArray.end(); ++it, ++i)
-      EXPECT_EQ(RandomArrayInt[i], *it);
+      EXPECT_EQ(ArrayRand[i], *it);
   }
 
   // No error unitialized array
@@ -99,11 +96,11 @@ TEST(TestSort, CombSorts)
 }
 
 // Basic Comb-Sort tests - Inverse Order
-TEST(TestSort, CombGreaterComparator)
+TEST(TestComb, CombGreaterComparator)
 {
   // Normal Run - Elements should be sorted in inverse order
   {
-    Container randomdArray(RandomArrayInt, RandomArrayInt + sizeof(RandomArrayInt) / sizeof(int));
+    Container randomdArray(ArrayRand);
     Comb<IT, GE_Comparator>(randomdArray.begin(), randomdArray.end());
 
     // All elements are sorted in inverse order
@@ -113,11 +110,11 @@ TEST(TestSort, CombGreaterComparator)
 
   // Already sorted Array in inverse order - Array should not be affected
   {
-    Container invSortedArray(SortedArrayInt, SortedArrayInt + sizeof(SortedArrayInt) / sizeof(int));
-    Comb<IT, GE_Comparator>(invSortedArray.begin(), invSortedArray.end());
+    Container invArraySort(ArraySort);
+    Comb<IT, GE_Comparator>(invArraySort.begin(), invArraySort.end());
 
     // All elements are still sorted in inverse order
-    for (auto it = invSortedArray.begin(); it < invSortedArray.end() - 1; ++it)
+    for (auto it = invArraySort.begin(); it < invArraySort.end() - 1; ++it)
       EXPECT_GE(*it, *(it + 1));
   }
 
