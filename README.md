@@ -72,7 +72,6 @@ it **improves work-flow, increase productivity, gives you agility and project he
 
 - [**Documentation**](https://wiki.hurna.io/hurna_core/doc/index.html)
 - [**Git Repository**](https://github.com/Hurna/Hurna-Core)
-- [**Kitware Dashboard**](https://my.cdash.org/index.php?project=Hurna+Core)
 
 ### Related
 
